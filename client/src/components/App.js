@@ -1,9 +1,12 @@
 import React from "react";
+import Header from "./Header.js"
+import Main from "./Main.js"
 
 const App = () => {
   return (
     <div id="app">
-      <h1>Welcome</h1>
+      <Header />
+      <Main />
     </div>
   );
 };

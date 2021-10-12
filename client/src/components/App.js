@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./Header.js"
 import Main from "./Main.js"
+import data from '../lib/data'
+import apiClient from '../lib/apiClient.js'
 
 const App = () => {
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    apiClient.fetchProducts((data) => {
+      setProducts(data)
+    })
+  },[])
   return (
     <div id="app">
       <Header />
-      <Main />
+      <Main products={products} setProducts={setProducts}/>
     </div>
   );
 };

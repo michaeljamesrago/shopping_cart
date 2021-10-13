@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import apiClient from '../lib/apiClient'
 
 const AddProductForm = ({products, setProducts}) => {
   const [ addFormVisible, setAddFormVisible ] = useState(false)
@@ -16,7 +17,11 @@ const AddProductForm = ({products, setProducts}) => {
   }
 
   const addProduct = () => {
-    setProducts(products.concat({title, price, quantity, id: 1000}))
+    const newProduct = { title, price, quantity }
+    apiClient.addProduct(newProduct, (data) => {
+      setProducts(products.concat(data))
+      resetForm()
+    })
   }
 
   return (
@@ -40,7 +45,7 @@ const AddProductForm = ({products, setProducts}) => {
         </div>
 
         <div class="actions form-actions">
-          <a class="button">Add</a>
+          <a class="button" onClick={addProduct}>Add</a>
           <a class="button" onClick={toggleAddFormVisibility}>Cancel</a>
         </div>
       </form>

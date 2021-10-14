@@ -7,6 +7,11 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
   const toggleEditFormVisibility = () => {
     setEditFormVisible(!editFormVisible)
   }
+
+  const itemAvailable = () => {
+    return product.quantity > 0
+  }
+
   const addToCart = () => {
     const body = {
       productId: product._id,
@@ -14,17 +19,14 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
       price: product.price,
       quantity: product.quantity - 1,
     };
-    if (product.quantity <= 0) return;
+    if (!itemAvailable()) return;
     apiClient.addItemToCart(body, (data) => {
       const itemInCart = cart.find((item) => {
-        console.log("item._id: ", item._id)
-        console.log("data.productId: ", data.productId)
-        return item._id === data.productId
+        return item._id === data._id
       })
-      console.log("itemInCart: ", itemInCart)
       if (itemInCart) {
         setCart(cart.map(i => {
-          return i.product_id === product.id ?
+          return i._id === itemInCart._id ?
             {...i, quantity: i.quantity + 1} :
             i
         }));
@@ -32,13 +34,23 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
         setCart(cart.concat(data))
       }
     })
+    apiClient.editProduct(product._id, body, (data) => {
+      setProducts(products.map((p) => {
+        return p._id === data._id ? 
+               {...p, quantity: p.quantity -1} :
+               p
+        }))
+      })
   }
 
   return (
     <div class="actions product-actions">
     {!editFormVisible ?
         <>
-          <a class="button add-to-cart" onClick={addToCart}>Add to Cart</a>
+          <a class={itemAvailable() ? "button add-to-cart" : "button add-to-cart disabled"}
+            onClick={addToCart}>
+            Add to Cart
+          </a>
           <a class="button edit" onClick={toggleEditFormVisibility}>Edit</a>
         </>
         : <EditForm toggleEdit={toggleEditFormVisibility}

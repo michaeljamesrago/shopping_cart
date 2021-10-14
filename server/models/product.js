@@ -3,21 +3,20 @@ const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
   title: {
-    type:String,
-    required: true,
-    trim: true
+    type: String,
+    required: [true, 'The Product title is required']
   },
   price: {
-    type:Number,
-    required: true,
+    type: Number,
+    required: [true]
   },
   quantity: {
-    type:Number,
-    required: true
+    type: Number,
+    required: [true]
   }
+})
 
-}, {timestamps: true})
-
-const Product = mongoose.model('product', ProductSchema);
+const Product = mongoose.model('Product', ProductSchema)
 
 module.exports = Product;
+

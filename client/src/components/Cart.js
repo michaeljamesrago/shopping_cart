@@ -21,14 +21,14 @@ const Cart = ({ cart, setCart }) => {
         return total + (item.price * item.quantity)
       }, 0);
       setTotal(tot)
-    } 
+    }
     totalPrice()
   }, [cart]);
-  
+
   return (
     <div class="cart">
       <h2>Your Cart</h2>
-    
+
       { cartIsEmpty() ? (
         <>
           <p>Your cart is empty</p>
@@ -51,8 +51,8 @@ const Cart = ({ cart, setCart }) => {
           </tr>
         </table>
     ) }
-      <a class={cartIsEmpty() ? 
-                "button checkout disabled" : 
+      <a class={cartIsEmpty() ?
+                "button checkout disabled" :
                 "button checkout"}
           onClick={checkout}>Checkout
       </a>

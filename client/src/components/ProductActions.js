@@ -8,13 +8,29 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
     setEditFormVisible(!editFormVisible)
   }
   const addToCart = () => {
-    const item = { productId: product._id, 
-                   title: product.title, 
-                   price: product.price }
-    apiClient.addItemToCart(item, (data) => {
-        apiClient.fetchCart((data) => {
-          setCart(data)
-        })
+    const body = {
+      productId: product._id,
+      title: product.title,
+      price: product.price,
+      quantity: product.quantity - 1,
+    };
+    if (product.quantity <= 0) return;
+    apiClient.addItemToCart(body, (data) => {
+      const itemInCart = cart.find((item) => {
+        console.log("item._id: ", item._id)
+        console.log("data.productId: ", data.productId)
+        return item._id === data.productId
+      })
+      console.log("itemInCart: ", itemInCart)
+      if (itemInCart) {
+        setCart(cart.map(i => {
+          return i.product_id === product.id ?
+            {...i, quantity: i.quantity + 1} :
+            i
+        }));
+      } else {
+        setCart(cart.concat(data))
+      }
     })
   }
 
@@ -25,9 +41,9 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
           <a class="button add-to-cart" onClick={addToCart}>Add to Cart</a>
           <a class="button edit" onClick={toggleEditFormVisibility}>Edit</a>
         </>
-        : <EditForm toggleEdit={toggleEditFormVisibility} 
-                    product={product} 
-                    setProducts={setProducts} 
+        : <EditForm toggleEdit={toggleEditFormVisibility}
+                    product={product}
+                    setProducts={setProducts}
                     products={products}/>
       }
     </div>

@@ -36,8 +36,13 @@ const apiClient = {
     .then(response => {
       callback(response.data)
     })
+  },
+  checkoutCart(callback) {
+    axios.post("api/cart/checkout")
+    .then(() => {
+      callback()
+    })
   }
-
 }
 
 export default apiClient

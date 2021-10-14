@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import EditForm from './EditForm'
 import apiClient from '../lib/apiClient'
 
@@ -12,8 +12,9 @@ const ProductActions = ({product, setProducts, products, cart, setCart}) => {
                    title: product.title, 
                    price: product.price }
     apiClient.addItemToCart(item, (data) => {
-      console.log("response from apiClient", data)
-      console.log("cart", cart)
+        apiClient.fetchCart((data) => {
+          setCart(data)
+        })
     })
   }
 

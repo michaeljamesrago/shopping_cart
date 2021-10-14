@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import CartItem from './CartItem'
+import apiClient from "../lib/apiClient"
 
 const Cart = ({ cart, setCart }) => {
   const [total, setTotal] = useState(0)
 
   const cartIsEmpty = () => {
     return cart.length === 0
+  }
+
+  const checkout = () => {
+    apiClient.checkoutCart(() => {
+      setCart([])
+    })
   }
 
   useEffect(() => {
@@ -44,7 +51,11 @@ const Cart = ({ cart, setCart }) => {
           </tr>
         </table>
     ) }
-      <a class="button checkout disabled">Checkout</a>
+      <a class={cartIsEmpty() ? 
+                "button checkout disabled" : 
+                "button checkout"}
+          onClick={checkout}>Checkout
+      </a>
     </div>
   )
 }

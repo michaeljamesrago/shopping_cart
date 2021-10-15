@@ -7,7 +7,6 @@ const apiClient = {
       callback(response.data)
     })
   },
-
   addProduct(product, callback) {
     axios.post("api/products", product)
     .then(response => {

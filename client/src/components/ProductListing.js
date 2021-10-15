@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import Product from './Product.js'
 
 const ProductListing = ({ products, setProducts, setCart, cart }) => {
+  console.log(products)
   return (
     <div class="product-listing">
       <h2>Products</h2>
       {products.map(product => {
         return (
-          <Product product={product} 
-                   products={products} 
-                   setProducts={setProducts} 
+          <Product product={product}
+                   products={products}
+                   setProducts={setProducts}
                    key={product._id}
                    cart={cart}
                    setCart={setCart}/>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const { ObjectId } = Schema.Types;
 
 const CartItemSchema = new Schema({
   title: {
@@ -15,9 +16,9 @@ const CartItemSchema = new Schema({
     required: [true]
   },
   productId: {
-    type: String,
-    required: [true]
-  }
+    type: ObjectId,
+    ref: "Product",
+  },
 })
 
 const CartItem = mongoose.model('CartItem', CartItemSchema)

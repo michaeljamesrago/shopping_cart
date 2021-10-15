@@ -1,27 +1,52 @@
 const Product = require("../models/product");
 
 const getProducts = (req, res, next) => {
-  Product.find({}).then((products) => {
-    res.json({products});
+  Product.find({})
+  .then((products) => {
+    req.products = products;
+    next()
   });
 };
 
+const sendProducts = (req, res) => {
+  const products = req.products;
+  res.json(products);
+}
+
 const addProduct = (req, res, next) => {
-  Product.create(req.body.product)
-    .then((product) => {
-      Product.find({_id: product._id}).then((product) => {
-        res.json({product});
-      });
-    });
+  Product.create(req.body)
+  .then((product) => {
+    req.product = product
+    next()
+  })
 };
 
+const sendProduct = (req, res) => {
+  const product = req.product
+  res.json(product)
+}
+
 const editProduct = (req, res, next) => {
-  const productId = req.params.id
-  Product.findById(productId)
+  Product.findByIdAndUpdate(req.params.id, req.body, {new:true})
+  .then((product) => {
+    req.product = product
+    next()
+  })
+};
+
+const deleteProduct = (req, res, next) => {
+  const id = req.params.id
+  Product.findByIdAndDelete(id)
+  .then(() => next())
 }
 
 exports.getProducts = getProducts;
 exports.addProduct = addProduct;
+exports.sendProducts = sendProducts;
+exports.sendProduct = sendProduct;
+exports.deleteProduct = deleteProduct;
+exports.editProduct = editProduct;
+
 
 // const Board = require("../models/board");
 // const Card = require("../models/card");

@@ -9,6 +9,7 @@ const App = () => {
 
   useEffect(() => {
     apiClient.fetchProducts((data) => {
+      console.log("data in app: ", data)
       setProducts(data)
     })
   },[])
